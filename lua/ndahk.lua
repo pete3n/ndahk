@@ -33,13 +33,13 @@ local function extract_modifiers_and_key(keymap_str)
     local modifiers = {}
     local key = keymap_str
 
-    
     local mod_map = {
-        ["<C-"] = "Ctrl",
-        ["<M-"] = "Meta",
-        ["<A-"] = "Alt",
-        ["<S-"] = "Shift",
+        ["%<C%-"] = "Ctrl",
+        ["%<M%-"] = "Meta",
+        ["%<A%-"] = "Alt",
+        ["%<S%-"] = "Shift",
     }
+
 
     for mod_key, mod_name in pairs(mod_map) do
         if string.find(key, mod_key) then
@@ -66,7 +66,6 @@ local function extract_modifiers_and_key(keymap_str)
 
     key = key:gsub(">$", "")
     key = key:gsub("^%s*(.-)%s*$", "%1")
-        
     return modifiers, key
 end
 
@@ -75,7 +74,6 @@ local function write_hotkeys_file(module_name, final_format)
     local file, err = io.open(file_path, "w")
 
     if not file then
-        print("Failed to open keymap menu file:", err)
         return
     end
 
