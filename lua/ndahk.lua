@@ -12,7 +12,31 @@ if vim.fn.isdirectory(keymap_menus_path) == 0 then
 end
 
 local awesome_hotkey = {}
+
+awesome_hotkey.config = {
+    plugin_hotkeys = {}
+}
+
 awesome_hotkey.desc_format = "%s: %s"
+
+function awesome_hotkey.setup(user_config)
+    for k, v in pairs(user_config) do
+        awesome_hotkey.config[k] = v
+    end
+
+    for _, plugin in ipairs(awesome_hokey.config.plugin_hotkeys) do
+        vim.cmd(string.format(
+            "autocmd BufEnter %s_* lua require'core.mm_exporter'.capture_%s_mappings()", 
+            plugin, 
+            plugin
+        ))
+        vim.cmd(string.format(
+            "autocmd BufWinLeave %s_* lua require'core.mm_exporter'.on_%s_close()", 
+            plugin,
+            plugin
+        ))
+    end
+end
 
 -- The description field for keymaps need to contain a common keyword
 -- to uniquely identify that group of keymaps
